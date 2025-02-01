@@ -1,0 +1,69 @@
+
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<body>
+
+<h1 id="title"></h1>
+<div id="text"></div>
+
+</body>
+
+<script>
+
+const queryString = window.location.search;
+console.log(queryString);
+const urlParams = new URLSearchParams(queryString);
+const hymnNumber = urlParams.get('number');
+
+
+function showHymn(hymnBook){
+	   var hymnText = hymnBook[hymnNumber]["verses"];
+	   var hymnTitle = hymnBook[hymnNumber]["title"];
+	   		  console.log(hymnText.length);
+
+	   document.getElementById("title").innerHTML = hymnNumber + " - " + hymnTitle ;
+       var divEl = document.getElementById("text");
+	   var textString = "";
+	   for (var i=0; i<hymnText.length; i++){
+	      var verseTitle = hymnText[i]["verse_title"];
+		  textString = textString + "<h3>"+verseTitle+"</h3>";
+		  textString = textString;		  
+
+	      var lines = hymnText[i]["lines"];
+		  console.log(lines);
+		  
+		  for (var l=0; l<lines.length; l++){
+		    textString = textString + lines[l];
+		    textString = textString + "<br>";		  
+
+		  }
+		  textString = textString + "<br>";		  
+
+		 
+	   }
+	   divEl.innerHTML = textString;
+}
+
+function getHymnBook(){
+      const url = "../assets/hymns.json";
+ 
+
+	const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+       var hymnBook = JSON.parse(this.responseText);
+
+
+	   showHymn(hymnBook);
+
+			
+    }
+    xhttp.open("GET", url);
+    xhttp.send();	
+}
+
+getHymnBook();
+</script>
+
+</html>
